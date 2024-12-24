@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     FlatList,
-    Text,
     View,
     StyleSheet,
     Image,
@@ -24,21 +23,10 @@ const EventsList = () => {
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <TouchableOpacity activeOpacity={0.8} onPress={() => onPress(item)} style={styles.eventCard}>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.title}>{item.title}</Text>
-                            <Text numberOfLines={3} style={styles.description}>
-                                {item.description}
-                            </Text>
-                            <View style={styles.footer}>
-                                <Text style={styles.date}>{item.date}</Text>
-                                <Text style={styles.time}>{item.time}</Text>
-                            </View>
-                        </View>
-                        <TouchableOpacity style={styles.arrowButton}>
-                            <Image
-                                source={require('../assets/img/arrow-right/weui_arrow-filled.png')}
-                            />
-                        </TouchableOpacity>
+                        <Image
+                            source={item.image}
+                            resizeMode={'cover'}
+                        />
                     </TouchableOpacity>
                 )}
                 showsVerticalScrollIndicator={false}
@@ -55,14 +43,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     eventCard: {
-        flexDirection: 'row',
+        width: '100%',
         alignItems: 'center',
-        backgroundColor: Colors.white,
-        marginBottom: 16,
-        borderWidth: 1,
-        borderColor: Colors.input.borderColor,
-        borderRadius: 12,
-        padding: 16,
+        marginBottom: 24,
     },
     textContainer: {
         flex: 1,

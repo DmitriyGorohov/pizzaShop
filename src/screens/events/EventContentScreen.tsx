@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Colors from '@src/styles/Colors';
 import { useRoute } from '@react-navigation/native';
 import { MainRouteProps } from '@src/types/stacks/MainStacksType';
@@ -7,35 +7,39 @@ import { MainRouteProps } from '@src/types/stacks/MainStacksType';
 const EventContentScreen = (): React.JSX.Element => {
     const { params } = useRoute<MainRouteProps>();
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>{params.item.title}</Text>
-            <Image source={params.item.image} style={styles.image} />
-            <Text style={styles.description}>{params.item.description}</Text>
-            <Text
-                style={{
-                    fontSize: 16,
-                    color: Colors.textBlack,
-                }}
-            >
-                Time
-            </Text>
-            <View style={styles.infoContainer}>
-                <Image source={require('@src/assets/img/time/Group.png')} />
-                <Text style={styles.infoText}>{params.item.time}</Text>
+        <ScrollView style={{ flexGrow: 1, backgroundColor: Colors.white }}>
+            <Image source={params.item.image} style={styles.image} resizeMode={'stretch'} />
+            <View style={styles.container}>
+                <View
+                    style={{
+                        backgroundColor: Colors.white,
+                        padding: 16,
+                        width: '100%',
+                        borderRadius: 16,
+                        alignSelf: 'center',
+                        position: 'absolute',
+                        top: -60,
+                        shadowColor: 'black',
+                        shadowOffset: { width: 0, height: 0 },
+                        shadowOpacity: 0.1,
+                        elevation: 3,
+                    }}
+                >
+                    <Text style={styles.title}>{params.item.title}</Text>
+                    <Text style={{
+                        color: Colors.textGray,
+                        fontSize: 10,
+                    }}>{params.item.date}</Text>
+                    <Text style={{
+                        color: Colors.textBlue,
+                        fontSize: 14,
+                        marginTop: 4,
+                    }}>{params.item.time}</Text>
+                </View>
+                <Text style={{ fontWeight: '900', fontSize: 16, marginTop: 50, }}>About</Text>
+                <Text style={{ fontWeight: '200', fontSize: 16, marginTop: 12, }}>{params.item.description}</Text>
             </View>
-            <Text
-                style={{
-                    fontSize: 16,
-                    color: Colors.textBlack,
-                }}
-            >
-                Date
-            </Text>
-            <View style={styles.infoContainer}>
-                <Image source={require('@src/assets/img/data/Group.png')} />
-                <Text style={styles.infoText}>{params.item.date}</Text>
-            </View>
-        </View>
+        </ScrollView>
     );
 };
 const styles = StyleSheet.create({
@@ -55,17 +59,15 @@ const styles = StyleSheet.create({
         marginLeft: 8,
     },
     title: {
-        paddingTop: 20,
-        fontSize: 22,
-        fontWeight: 'bold',
+        fontSize: 18,
+        fontWeight: '500',
         color: Colors.textBlack,
-        marginBottom: 16,
+        marginBottom: 12,
     },
     image: {
-        width: '100%',
-        height: 200,
-        borderRadius: 12,
-        marginBottom: 16,
+        alignSelf: 'center',
+        width: Dimensions.get('window').width,
+        marginTop: 20,
     },
     description: {
         fontSize: 16,

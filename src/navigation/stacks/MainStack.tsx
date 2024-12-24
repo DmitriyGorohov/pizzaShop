@@ -15,23 +15,21 @@ import CartScreen from '@src/screens/cart/CartScreen';
 import ReservationSuccessScreen from '@src/screens/reservation/ReservationSuccessScreen';
 import OrderScreen from '@src/screens/cart/OrderScreen';
 import EventContentScreen from '@src/screens/events/EventContentScreen';
+import { Image, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { resetProductToBasket } from '@src/store/shop/shopSlice';
 
 const Stack = createStackNavigator();
 
 const MainStack = (): React.JSX.Element => {
+    const dispatch = useDispatch();
     return (
         <Stack.Navigator initialRouteName={Screens.MAIN_SCREEN}>
             <Stack.Screen
                 options={{
                     cardStyleInterpolator:
                         CardStyleInterpolators.forHorizontalIOS,
-                    headerTitle: 'Logo or name',
-                    headerTitleAlign: 'center',
-                    headerBackTitle: 'Back',
-                    headerTintColor: Colors.button.buttonGreen,
-                    headerBackTitleStyle: {
-                        color: Colors.button.buttonGreen,
-                    },
+                    headerShown: false,
                 }}
                 name={Screens.MAIN_SCREEN}
                 component={MainScreen}
@@ -40,13 +38,16 @@ const MainStack = (): React.JSX.Element => {
                 options={{
                     cardStyleInterpolator:
                         CardStyleInterpolators.forHorizontalIOS,
-                    headerTitle: 'Shop',
+                    headerTitle: 'Menu',
                     headerTitleAlign: 'center',
                     headerBackTitle: 'Back',
-                    headerTintColor: Colors.button.buttonGreen,
+                    headerTintColor: Colors.white,
                     headerBackTitleVisible: true,
                     headerBackTitleStyle: {
-                        color: Colors.button.buttonGreen,
+                        color: Colors.white,
+                    },
+                    headerStyle: {
+                        backgroundColor: Colors.button.buttonRed,
                     },
                 }}
                 name={Screens.SHOP}
@@ -59,10 +60,13 @@ const MainStack = (): React.JSX.Element => {
                     headerTitle: 'Contacts',
                     headerTitleAlign: 'center',
                     headerBackTitle: 'Back',
-                    headerTintColor: Colors.button.buttonGreen,
+                    headerTintColor: Colors.white,
                     headerBackTitleVisible: true,
                     headerBackTitleStyle: {
-                        color: Colors.button.buttonGreen,
+                        color: Colors.white,
+                    },
+                    headerStyle: {
+                        backgroundColor: Colors.button.buttonRed,
                     },
                 }}
                 name={Screens.CONTACTS}
@@ -72,13 +76,16 @@ const MainStack = (): React.JSX.Element => {
                 options={{
                     cardStyleInterpolator:
                         CardStyleInterpolators.forHorizontalIOS,
-                    headerTitle: 'Reservation events',
+                    headerTitle: 'Events',
                     headerBackTitle: 'Back',
                     headerTitleAlign: 'center',
-                    headerTintColor: Colors.button.buttonGreen,
+                    headerTintColor: Colors.white,
                     headerBackTitleVisible: true,
                     headerBackTitleStyle: {
-                        color: Colors.button.buttonGreen,
+                        color: Colors.white,
+                    },
+                    headerStyle: {
+                        backgroundColor: Colors.button.buttonRed,
                     },
                 }}
                 name={Screens.EVENTS}
@@ -91,10 +98,13 @@ const MainStack = (): React.JSX.Element => {
                     headerTitle: 'Reservation',
                     headerBackTitle: 'Back',
                     headerTitleAlign: 'center',
-                    headerTintColor: Colors.button.buttonGreen,
+                    headerTintColor: Colors.white,
                     headerBackTitleVisible: true,
                     headerBackTitleStyle: {
-                        color: Colors.button.buttonGreen,
+                        color: Colors.white,
+                    },
+                    headerStyle: {
+                        backgroundColor: Colors.button.buttonRed,
                     },
                 }}
                 name={Screens.RESERVATION}
@@ -104,16 +114,29 @@ const MainStack = (): React.JSX.Element => {
                 options={{
                     cardStyleInterpolator:
                         CardStyleInterpolators.forHorizontalIOS,
-                    headerTitle: 'Cart',
+                    headerTitle: 'Shopping cart',
                     headerTitleAlign: 'center',
                     headerBackTitle: 'Back',
                     headerStyle: {
-                        borderBottomColor: 'transparent',
+                        backgroundColor: Colors.button.buttonRed,
                     },
-                    headerTintColor: Colors.button.buttonGreen,
+                    headerRight: () => {
+                        return (
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                onPress={() => dispatch(resetProductToBasket())}
+                                style={{ marginRight: 16 }}
+                            >
+                                <Image
+                                    source={require('@src/assets/img-pizza/remove/remove.png')}
+                                />
+                            </TouchableOpacity>
+                        );
+                    },
+                    headerTintColor: Colors.white,
                     headerBackTitleVisible: true,
                     headerBackTitleStyle: {
-                        color: Colors.button.buttonGreen,
+                        color: Colors.white,
                     },
                 }}
                 name={Screens.CART}
@@ -126,10 +149,13 @@ const MainStack = (): React.JSX.Element => {
                     headerBackTitleVisible: true,
                     headerBackTitle: 'Back',
                     headerTitleAlign: 'center',
-                    headerTitle: '',
-                    headerTintColor: Colors.button.buttonGreen,
+                    headerTitle: 'Loyalty Card',
+                    headerTintColor: Colors.white,
                     headerBackTitleStyle: {
-                        color: Colors.button.buttonGreen,
+                        color: Colors.white,
+                    },
+                    headerStyle: {
+                        backgroundColor: Colors.button.buttonRed,
                     },
                 }}
                 name={Screens.BONUSES}
@@ -142,10 +168,13 @@ const MainStack = (): React.JSX.Element => {
                     headerBackTitleVisible: true,
                     headerBackTitle: 'Back',
                     headerTitleAlign: 'center',
-                    headerTitle: 'Reservation',
-                    headerTintColor: Colors.button.buttonGreen,
+                    headerTitle: '',
+                    headerTintColor: Colors.white,
                     headerBackTitleStyle: {
-                        color: Colors.button.buttonGreen,
+                        color: Colors.white,
+                    },
+                    headerStyle: {
+                        backgroundColor: Colors.button.buttonRed,
                     },
                 }}
                 name={Screens.RESERVATION_SUCCESS}
@@ -159,9 +188,12 @@ const MainStack = (): React.JSX.Element => {
                     headerBackTitle: 'Back',
                     headerTitleAlign: 'center',
                     headerTitle: 'Order',
-                    headerTintColor: Colors.button.buttonGreen,
+                    headerStyle: {
+                        backgroundColor: Colors.button.buttonRed,
+                    },
+                    headerTintColor: Colors.white,
                     headerBackTitleStyle: {
-                        color: Colors.button.buttonGreen,
+                        color: Colors.white,
                     },
                 }}
                 name={Screens.CART_SUCCESS}
@@ -174,11 +206,14 @@ const MainStack = (): React.JSX.Element => {
                     headerBackTitleVisible: true,
                     headerBackTitle: 'Back',
                     headerTitleAlign: 'center',
-                    headerTitle: '',
-                    headerTintColor: Colors.button.buttonGreen,
+                    headerTitle: 'Event',
+                    headerTintColor: Colors.white,
                     headerBackTitleStyle: {
-                        color: Colors.button.buttonGreen,
+                        color: Colors.white,
                     },
+                  headerStyle: {
+                      backgroundColor: Colors.button.buttonRed,
+                  },
                 }}
                 name={Screens.EVENTS_CONTENT}
                 component={EventContentScreen}

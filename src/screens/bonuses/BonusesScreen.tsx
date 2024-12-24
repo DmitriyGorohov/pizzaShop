@@ -1,58 +1,347 @@
-import React from 'react';
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+    Dimensions,
+    Image,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import Colors from '@src/styles/Colors';
+import Modal from 'react-native-modal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Navigation from '@src/navigation/navigation';
 
 const BonusesScreen = (): React.JSX.Element => {
-    const bonuses = Array.from({ length: 8 }).map((_, index) => ({
-        id: index + 1,
-        isCompleted: index === 0, // Первый элемент выполнен
-    }));
+    const initialCards = Array(6).fill('');
+    const [cards, setCards] = useState<string[]>(initialCards);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [selectedCard, setSelectedCard] = useState<number | null>(null);
+    const [inputValue, setInputValue] = useState('');
+    const allAre = cards.slice(0, 6).every((element) => element === '1111');
+    const nonEmptyCount = cards.filter((item) => item !== '').length;
 
-    const renderBonusItem = ({ item }: { item: { id: number; isCompleted: boolean } }) => {
-        return (
-            <View
-                style={[
-                    styles.bonusItem,
-                    item.isCompleted ? styles.completedItem : styles.incompleteItem,
-                ]}
-            >
-                {item.isCompleted && (
-                    <>
-                        <Image
-                            source={require('@src/assets/img/doc/lets-icons_order-fill.png')}
-                            resizeMode="cover"
-                        />
-                        <View style={styles.checkmarkContainer}>
-                            <Image
-                                source={require('@src/assets/img/check/ep_success-filled.png')}
-                                resizeMode="cover"
-                            />
-                        </View>
-                    </>
-                )}
-            </View>
-        );
+    useEffect(() => {
+        const loadCards = async () => {
+            const savedCards = await AsyncStorage.getItem('cards');
+            if (savedCards.length > 0) {
+                setCards(JSON.parse(savedCards));
+            }
+        };
+        loadCards();
+    }, []);
+
+    // Сохранение состояния в AsyncStorage
+    const saveCards = async (newCards: string[]) => {
+        await AsyncStorage.setItem('cards', JSON.stringify(newCards));
+        setCards(newCards);
     };
 
+    // Очистка AsyncStorage и сброс состояния
+    const resetCards = async () => {
+        await AsyncStorage.removeItem('cards');
+        setCards(initialCards); // Сброс к первоначальному состоянию
+    };
+
+    // Открытие модалки
+    const handleCardPress = (index: number) => {
+        setSelectedCard(index);
+        setModalVisible(true);
+    };
+
+    // Сохранение данных карточки
+    const handleSave = () => {
+        if (selectedCard !== null) {
+            const newCards = [...cards];
+            if (inputValue === '1111') {
+                newCards[selectedCard] = inputValue;
+                saveCards(newCards);
+                setInputValue('');
+                setSelectedCard(null);
+                setModalVisible(false);
+                setIsError(false);
+            } else {
+                setIsError(true);
+            }
+        }
+    };
     return (
         <View style={styles.container}>
-            {/* Title */}
-            <Text style={styles.title}>Bonuses</Text>
-
-            {/* Description */}
-            <Text style={styles.description}>
-                Make 8 orders at our restaurant and get the next one completely free or with a 50%
-                discount! Gather your friends and enjoy delicious food!
+            <View
+                style={{
+                    marginTop: 12,
+                    paddingVertical: 14,
+                    paddingHorizontal: 24,
+                    backgroundColor: Colors.button.buttonRed,
+                    borderRadius: 12,
+                }}
+            >
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        marginBottom: 12,
+                    }}
+                >
+                    <Text style={{ color: Colors.white }}>Loyalty card</Text>
+                    <Text
+                        style={{ color: Colors.white }}
+                    >{`${nonEmptyCount}/6`}</Text>
+                </View>
+                <View
+                    style={{
+                        paddingVertical: 14,
+                        paddingHorizontal: 24,
+                        backgroundColor: Colors.white,
+                        borderRadius: 12,
+                    }}
+                >
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        {cards.map((value, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={{ marginRight: 6, flexWrap: 'nowrap' }}
+                                activeOpacity={1}
+                                onPress={() => {
+                                    if (index + 1 !== 8) {
+                                        if (value !== '1111') {
+                                            handleCardPress(index);
+                                        }
+                                    }
+                                }}
+                            >
+                                {value === '1111' ? (
+                                    <Image
+                                        source={require('@src/assets/img-pizza/burger-15/burger.png')}
+                                        resizeMode={'cover'}
+                                    />
+                                ) : (
+                                    <Image
+                                        source={require('@src/assets/img-pizza/empty-burger/Group.png')}
+                                        resizeMode={'cover'}
+                                    />
+                                )}
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                </View>
+            </View>
+            <Text
+                style={{
+                    color: Colors.textBlack,
+                    fontSize: 18,
+                    fontWeight: '400',
+                    marginTop: 16,
+                }}
+            >
+                Promotion terms and conditions: Eat specialty burgers at our
+                restaurant 6 times and get 7 free!
             </Text>
-
-            {/* Bonuses Grid */}
-            <FlatList
-                data={bonuses}
-                renderItem={renderBonusItem}
-                keyExtractor={(item) => item.id.toString()}
-                numColumns={3}
-                contentContainerStyle={styles.gridContainer}
-            />
+            <Text
+                style={{
+                    color: Colors.textBlack,
+                    fontSize: 20,
+                    fontWeight: '600',
+                    marginTop: 16,
+                }}
+            >
+                History Rewards
+            </Text>
+            <View
+                style={{
+                    marginTop: 12,
+                    borderBottomWidth: 1,
+                    borderBottomColor: Colors.textBlack,
+                }}
+            >
+                <Text
+                    style={{
+                        fontSize: 16,
+                        fontWeight: '500',
+                        color: Colors.textBlack,
+                    }}
+                >
+                    +1 point
+                </Text>
+                <Text
+                    style={{
+                        fontSize: 12,
+                        paddingVertical: 6,
+                        fontWeight: '400',
+                        color: Colors.textGray,
+                    }}
+                >
+                    24 June | 12:30
+                </Text>
+            </View>
+            <View
+                style={{
+                    marginTop: 12,
+                    borderBottomWidth: 1,
+                    borderBottomColor: Colors.textBlack,
+                }}
+            >
+                <Text
+                    style={{
+                        fontSize: 16,
+                        fontWeight: '500',
+                        color: Colors.textBlack,
+                    }}
+                >
+                    +1 point
+                </Text>
+                <Text
+                    style={{
+                        fontSize: 12,
+                        paddingVertical: 6,
+                        fontWeight: '400',
+                        color: Colors.textGray,
+                    }}
+                >
+                    22 June | 12:30
+                </Text>
+            </View>
+            <Modal isVisible={modalVisible}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>Enter code</Text>
+                        <TextInput
+                            placeholderTextColor={Colors.textBlack}
+                            style={[
+                                styles.input,
+                                isError && {
+                                    borderWidth: 2,
+                                    borderColor: Colors.button.buttonRed,
+                                },
+                            ]}
+                            maxLength={4}
+                            value={inputValue}
+                            onChangeText={(text) => {
+                                setIsError(false);
+                                setInputValue(text);
+                            }}
+                            placeholder="Enter code"
+                            keyboardType="number-pad"
+                        />
+                        {isError && (
+                            <Text
+                                style={{
+                                    fontSize: 12,
+                                    fontWeight: '400',
+                                    color: Colors.button.buttonRed,
+                                    marginBottom: 12,
+                                }}
+                            >
+                                The code is not correct
+                            </Text>
+                        )}
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                onPress={handleSave}
+                                style={{
+                                    backgroundColor: Colors.button.buttonRed,
+                                    padding: 16,
+                                    flex: 1,
+                                    marginRight: 10,
+                                    borderRadius: 12,
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: 18,
+                                        fontWeight: '400',
+                                        color: Colors.white,
+                                    }}
+                                >
+                                    Save
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                onPress={() => {
+                                    setInputValue('');
+                                    setSelectedCard(null);
+                                    setModalVisible(false);
+                                    setIsError(false);
+                                }}
+                                style={{
+                                    flex: 1,
+                                    backgroundColor: Colors.button.buttonRed,
+                                    padding: 16,
+                                    borderRadius: 12,
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        textAlign: 'center',
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: '400',
+                                    }}
+                                >
+                                    Cancel
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+            <View
+                style={{
+                    paddingHorizontal: 16,
+                    position: 'absolute',
+                    alignSelf: 'center',
+                    bottom: 40,
+                    width: '100%',
+                }}
+            >
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                        if (!allAre) {
+                            Navigation.pop();
+                        } else {
+                            resetCards();
+                        }
+                    }}
+                    style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: Colors.button.buttonOrange,
+                        borderRadius: 30,
+                        paddingVertical: 12,
+                    }}
+                >
+                    <Text
+                        style={{
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: '700',
+                        }}
+                    >
+                        {allAre ? 'Reset' : 'Back to menu'}
+                    </Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
@@ -62,37 +351,43 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white,
         paddingHorizontal: 16,
     },
-    title: {
-        marginTop: 20,
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: '#000000',
-        marginBottom: 16,
-    },
-    description: {
-        fontSize: 16,
-        color: '#666666',
-        marginBottom: 24,
-    },
-    gridContainer: {},
-    bonusItem: {
-        width: '48%',
-        aspectRatio: 1,
+    card: {
+        width: Dimensions.get('window').width * 0.16,
+        height: 65,
+        backgroundColor: Colors.button.buttonRed,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 4,
-        borderRadius: 8,
+        margin: 10,
+        borderRadius: 10,
     },
-    completedItem: {
-        backgroundColor: Colors.button.buttonGreen,
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    incompleteItem: {
-        backgroundColor: '#F5F5F5',
+    modalContent: {
+        width: 350,
+        padding: 20,
+        backgroundColor: Colors.white,
+        borderRadius: 10,
+        alignItems: 'center',
     },
-    checkmarkContainer: {
-        position: 'absolute',
-        top: 8,
-        right: 8,
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: Colors.textBlack,
+        marginBottom: 20,
+    },
+    input: {
+        width: '100%',
+        fontSize: 20,
+        borderWidth: 0.5,
+        borderColor: Colors.button.buttonRed,
+        borderRadius: 30,
+        paddingVertical: 12,
+        backgroundColor: Colors.white,
+        marginBottom: 10,
+        paddingHorizontal: 20,
     },
 });
 export default BonusesScreen;

@@ -76,4 +76,5 @@ export const {
     addProductToBasket,
     resetProductToBasket,
     decreaseProductQuantity,
+    removeProductFromBasket,
 } = shopSlice.actions;

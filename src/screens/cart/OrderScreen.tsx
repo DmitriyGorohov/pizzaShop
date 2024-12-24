@@ -1,5 +1,11 @@
-import React, { type FC } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import {
+    Image,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
 import Navigation from '@src/navigation/navigation';
 import Colors from '@src/styles/Colors';
 import { Screens } from '@src/navigation/const';
@@ -10,36 +16,54 @@ const OrderScreen = (): React.JSX.Element => {
     const dispatch = useDispatch();
     return (
         <View style={styles.container}>
+            <Text
+                style={{
+                    fontSize: 24,
+                    fontWeight: '400',
+                    textAlign: 'center',
+                    paddingHorizontal: 40,
+                    paddingTop: 40,
+                }}
+            >
+                Your order has been successfully placed
+            </Text>
             <Image
-                source={require('@src/assets/img/order-success/order-success.png')}
+                source={require('@src/assets/img-pizza/cart-success/cart-success.png')}
+                resizeMode="cover"
+                style={{
+                    marginBottom: 50,
+                }}
+            />
+            <Image
+                source={require('@src/assets/img-pizza/cart-qr/QR.png')}
                 resizeMode="cover"
             />
-            <TouchableOpacity
-                activeOpacity={0.8}
+            <Pressable
                 onPress={() => {
                     dispatch(resetProductToBasket());
                     Navigation.navigate(Screens.SHOP);
                 }}
                 style={{
-                    backgroundColor: Colors.button.buttonGreen,
-                    borderRadius: 12,
-                    width: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    borderRadius: 30,
+                    paddingHorizontal: 80,
+                    paddingVertical: 12,
                     position: 'absolute',
                     bottom: 40,
-                    padding: 16,
+                    backgroundColor: Colors.button.buttonOrange,
+                    alignItems: 'center',
+                    justifyContent: 'center',
                 }}
             >
                 <Text
                     style={{
-                        color: Colors.white,
-                        fontWeight: 'bold',
+                        color: Colors.textBlack,
+                        fontSize: 20,
+                        fontWeight: '500',
                     }}
                 >
-                    Main page
+                    Back to menu
                 </Text>
-            </TouchableOpacity>
+            </Pressable>
         </View>
     );
 };
@@ -47,7 +71,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         paddingHorizontal: 16,
         backgroundColor: Colors.white,
     },
