@@ -5,7 +5,9 @@ interface IBaseColors {
 export interface IColors extends IBaseColors {
   white: string,
   textBlack: string,
+  textOrange: string,
   textGray: string;
+  textBlue: string;
   gray: string;
   grayCartBorder: string;
   input: {
@@ -13,8 +15,8 @@ export interface IColors extends IBaseColors {
     placeholderColor: string;
   },
   button: {
-    buttonGreen: string;
+    buttonOrange: string;
     buttonDisable: string;
-    buttonError: string;
+    buttonRed: string;
   },
 }

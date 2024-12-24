@@ -1,244 +1,224 @@
-import {Screens} from '@src/navigation/const';
+import { Screens } from '@src/navigation/const';
 
 type MenuItem = {
-  id: string; // Уникальный идентификатор
-  title: string; // Заголовок
-  icon: ReturnType<typeof require>; // Иконка с использованием require()
-  route: string; // Путь для навигации
+    id: string; // Уникальный идентификатор
+    title: string; // Заголовок
+    route: string; // Путь для навигации
 };
 
 export const menuData: MenuItem[] = [
-  {
-    id: '1',
-    title: 'Shop',
-    icon: require('@src/assets/img/shop-icon/solar_shop-bold.png'),
-    route: Screens.SHOP,
-  },
-  {
-    id: '2',
-    title: 'Reservation',
-    icon: require('@src/assets/img/reservation/ic_baseline-table-bar.png'),
-    route: Screens.RESERVATION,
-  },
-  {
-    id: '3',
-    title: 'Contacts',
-    icon: require('@src/assets/img/contacts/iconamoon_phone-fill.png'),
-    route: Screens.CONTACTS,
-  },
-  {
-    id: '4',
-    title: 'Restaurant events',
-    icon: require('@src/assets/img/events/clarity_event-solid.png'),
-    route: Screens.EVENTS,
-  },
-  {
-    id: '5',
-    title: 'Bonuses',
-    icon: require('@src/assets/img/bonuses/tabler_gift-filled.png'),
-    route: Screens.BONUSES,
-  },
+    {
+        id: '1',
+        title: 'Restaurant',
+        route: Screens.SHOP,
+    },
+    {
+        id: '2',
+        title: 'Reservation',
+        route: Screens.RESERVATION,
+    },
+    {
+        id: '3',
+        title: 'Loyalty card',
+        route: Screens.BONUSES,
+    },
+    {
+        id: '4',
+        title: 'Contacts',
+        route: Screens.CONTACTS,
+    },
+    {
+        id: '5',
+        title: 'Events',
+        route: Screens.EVENTS,
+    },
 ];
 
 export type Product = {
-  id: number;
-  title: string;
-  description: string;
-  image: ReturnType<typeof require>;
-  price: number;
-  quantity?: number;
-  oldPrice?: number;
-  calories: string;
-  weight: string;
+    id: number;
+    title: string;
+    image: ReturnType<typeof require>;
+    price: number;
+    quantity?: number;
+    oldPrice?: number;
 };
 
 export const breakfasts: Product[] = [
-  {
-    id: 1,
-    title: "Rice porridge with lingonberries",
-    description: "320 Kcal, 131 g",
-    image: require('@src/assets/img/product-image/image.png'),
-    price: 29,
-    oldPrice: 35,
-    calories: "320 Kcal",
-    weight: "131 g",
-  },
-  {
-    id: 2,
-    title: "Semolina cake with cherry jam",
-    description: "282 Kcal, 224 g",
-    image: require('@src/assets/img/image-b-2/image.png'),
-    price: 29,
-    oldPrice: 35,
-    calories: "282 Kcal",
-    weight: "224 g",
-  },
-  {
-    id: 3,
-    title: "Cheese pancakes with strawberry jam",
-    description: "291 Kcal, 130 g",
-    image: require('@src/assets/img/image-b-3/image.png'),
-    price: 29,
-    oldPrice: 35,
-    calories: "291 Kcal",
-    weight: "130 g",
-  },
-  {
-    id: 4,
-    title: "Croissant with ham and cheese",
-    description: "433 Kcal, 110 g",
-    image: require('@src/assets/img/image-b-4/image.png'),
-    price: 29,
-    oldPrice: 35,
-    calories: "433 Kcal",
-    weight: "110 g",
-  },
+    {
+        id: 1,
+        title: 'Margherita Pizza',
+        image: require('@src/assets/img-pizza/pizza/pizza-1/Rectangle2.png'),
+        price: 12.99,
+    },
+    {
+        id: 2,
+        title: 'Pepperoni Pizza',
+        image: require('@src/assets/img-pizza/pizza/pizza-2/pizza-2.png'),
+        price: 14.29,
+    },
+    {
+        id: 3,
+        title: 'Vegetarian Pizza',
+        image: require('@src/assets/img-pizza/pizza/pizza-3/image.png'),
+        price: 13.29,
+    },
+    {
+        id: 4,
+        title: 'BBQ Chicken Pizza',
+        image: require('@src/assets/img-pizza/pizza/pizza-4/image.png'),
+        price: 11.85,
+    },
+    {
+        id: 5,
+        title: 'Four Cheese Pizza',
+        image: require('@src/assets/img-pizza/pizza/pizza-5/image.png'),
+        price: 10.88,
+    },
 ];
 
 export const lunches: Product[] = [
-  {
-    id: 5,
-    title: "Grilled chicken with vegetables",
-    description: "520 Kcal, 300 g",
-    image: require('@src/assets/img/image-l-1/image.png'),
-    price: 49,
-    oldPrice: 55,
-    calories: "520 Kcal",
-    weight: "300 g",
-  },
-  {
-    id: 6,
-    title: "Vegetable salad with dressing",
-    description: "150 Kcal, 200 g",
-    image: require('@src/assets/img/image-l-2/image.png'),
-    price: 25,
-    calories: "150 Kcal",
-    weight: "200 g",
-  },
-  {
-    id: 26,
-    title: "Vegetable salad with dressing",
-    description: "150 Kcal, 200 g",
-    image: require('@src/assets/img/image-l-3/image.png'),
-    price: 25,
-    calories: "150 Kcal",
-    weight: "200 g",
-  },
-  {
-    id: 36,
-    title: "Vegetable salad with dressing",
-    description: "150 Kcal, 200 g",
-    image: require('@src/assets/img/image-l-4/image.png'),
-    price: 25,
-    calories: "150 Kcal",
-    weight: "200 g",
-  },
+    {
+        id: 5435,
+        title: 'Spicy Jalapeño Burger',
+        image: require('@src/assets/img-pizza/burger/burger-1/image.png'),
+        price: 18.85,
+    },
+    {
+        id: 115,
+        title: 'Truffle Mushroom Burger',
+        image: require('@src/assets/img-pizza/burger/burger-2/image.png'),
+        price: 15.85,
+    },
+    {
+        id: 235,
+        title: 'Mediterranean Lamb Burger',
+        image: require('@src/assets/img-pizza/burger/burger-3/image.png'),
+        price: 13.85,
+    },
+    {
+        id: 1245,
+        title: 'Classic Cheeseburger',
+        image: require('@src/assets/img-pizza/burger/burger-4/image.png'),
+        price: 18.25,
+    },
+    {
+        id: 2225,
+        title: 'BBQ Bacon Burger',
+        image: require('@src/assets/img-pizza/burger/burger-5/image.png'),
+        price: 22.15,
+    },
+    {
+        id: 1535,
+        title: 'Veggie Delight Burger',
+        image: require('@src/assets/img-pizza/burger/burger-6/image.png'),
+        price: 10.15,
+    },
 ];
 
 export const dinners: Product[] = [
-  {
-    id: 7,
-    title: "Beef steak with rice with potatoes",
-    description: "650 Kcal, 350 g",
-    image: require('@src/assets/img/image-l-2/image.png'),
-    price: 59,
-    oldPrice: 65,
-    calories: "650 Kcal",
-    weight: "350 g",
-  },
-  {
-    id: 8,
-    title: "Fish fillet with rice with potatoes",
-    description: "430 Kcal, 300 g",
-    image: require('@src/assets/img/image-l-4/image.png'),
-    price: 45,
-    calories: "430 Kcal",
-    weight: "300 g",
-  },
-  {
-    id: 18,
-    title: "Fish fillet with rice with potatoes",
-    description: "430 Kcal, 300 g",
-    image: require('@src/assets/img/image-l-3/image.png'),
-    price: 45,
-    calories: "330 Kcal",
-    weight: "240 g",
-  },
-  {
-    id: 38,
-    title: "Chopped beef in creamy sauce with spinach and spaghetti",
-    description: "430 Kcal, 300 g",
-    image: require('@src/assets/img/image-l-1/image.png'),
-    price: 29,
-    calories: "420 Kcal",
-    weight: "250 g",
-  },
+    {
+        id: 15352,
+        title: 'Bruschetta Trio',
+        image: require('@src/assets/img-pizza/appe/appe-1/image.png'),
+        price: 10.15,
+    },
+    {
+        id: 15351,
+        title: 'Stuffed Mushrooms',
+        image: require('@src/assets/img-pizza/appe/appe-2/image.png'),
+        price: 9.15,
+    },
+    {
+        id: 15354,
+        title: 'Crispy Calamari Rings',
+        image: require('@src/assets/img-pizza/appe/appe-3/image.png'),
+        price: 11.15,
+    },
+    {
+        id: 15357,
+        title: 'Spinach and Artichoke Dip',
+        image: require('@src/assets/img-pizza/appe/appe-4/image.png'),
+        price: 7.15,
+    },
 ];
 
-export const allProducts: Product[] = [...breakfasts, ...lunches, ...dinners];
+export const allProducts: Product[] = [
+    {
+        id: 11,
+        title: 'Quinoa and Avocado Salad',
+        image: require('@src/assets/img-pizza/salad/salad-1/image.png'),
+        price: 12.99,
+    },
+    {
+        id: 22,
+        title: 'Greek Salad',
+        image: require('@src/assets/img-pizza/salad/salad-2/image.png'),
+        price: 14.29,
+    },
+    {
+        id: 33,
+        title: 'Caprese Salad',
+        image: require('@src/assets/img-pizza/salad/salad-3/image.png'),
+        price: 13.29,
+    },
+    {
+        id: 44,
+        title: 'Asian Sesame Salad',
+        image: require('@src/assets/img-pizza/salad/salad-4/image.png'),
+        price: 11.85,
+    },
+    {
+        id: 55,
+        title: 'Caesar Salad',
+        image: require('@src/assets/img-pizza/salad/salad-5/image.png'),
+        price: 10.88,
+    },
+];
 
 export type EventType = {
-  id: number;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  image: ReturnType<typeof require>;
+    id: number;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    image: ReturnType<typeof require>;
 };
 
 export const events: EventType[] = [
-  {
-    id: 1,
-    title: 'Dinner Under the Stars',
-    description:
-        'Enjoy the atmosphere of a romantic dinner on the restaurant terrace under the open sky, where a special menu and pleasant live music await you.',
-    date: '23rd December 2024',
-    time: '6:00 PM – 11:00 PM',
-    image: require('@src/assets/img/event-1/event-1.png')
-  },
-  {
-    id: 2,
-    title: 'Gastronomic Masterclass',
-    description:
-        'Join our chef for an exciting masterclass where you will learn to cook signature dishes and uncover the secrets of culinary art.',
-    date: '23rd December 2024',
-    time: '6:00 PM – 11:00 PM',
-    image: require('@src/assets/img/event-2/event-2.png')
-  },
-  {
-    id: 3,
-    title: 'Wine and Cheese Evening',
-    description:
-        'Discover the perfect pairing of wines and cheeses at our gastronomic evening, where a sommelier will share insights on the best combinations and conduct a tasting.',
-    date: '23rd December 2024',
-    time: '6:00 PM – 11:00 PM',
-    image: require('@src/assets/img/event-3/event-3.png')
-  },
-  {
-    id: 4,
-    title: 'Theme of the Night: Italian Celebration',
-    description:
-        'Immerse yourself in the atmosphere of Italy at our themed evening with live music, traditional dishes, and dances that will transport you to the heart of Rome.',
-    date: '23rd December 2024',
-    time: '6:00 PM – 11:00 PM',
-    image: require('@src/assets/img/event-1/event-1.png')
-  },
-  {
-    id: 5,
-    title: 'Theme of the Night: Italian Celebration',
-    description:
-        'Immerse yourself in the atmosphere of Italy at our themed evening with live music, traditional dishes, and dances that will transport you to the heart of Rome.',
-    date: '23rd December 2024',
-    time: '6:00 PM – 11:00 PM',
-    image: require('@src/assets/img/event-2/event-2.png')
-  },
-  {
-    id: 6,
-    title: 'Theme of the Night: Italian Celebration',
-    description:
-        'Immerse yourself in the atmosphere of Italy at our themed evening with live music, traditional dishes, and dances that will transport you to the heart of Rome.',
-    date: '23rd December 2024',
-    time: '6:00 PM – 11:00 PM',
-    image: require('@src/assets/img/event-3/event-3.png')
-  },
+    {
+        id: 1,
+        title: 'Wine & Cheese Pairing Night',
+        description:
+            'Embark on a journey of refined tastes with our exclusive Wine & Cheese Pairing Night. This event is perfect for wine enthusiasts and cheese connoisseurs alike. Enjoy a curated selection of the finest wines from around the world, expertly paired with an array of artisan cheeses that complement their flavors. Our sommelier will guide you through the tasting experience, sharing insights about each pairing and the stories behind them. The evening will take place in our elegant dining room, set with soft lighting and warm decor to create a sophisticated ambiance. Whether you\'re a seasoned taster or new to wine, this event promises to be an unforgettable experience. Limited seats are available for an intimate setting.',
+        date: 'Saturday, March 16, 2024',
+        time: 'Time: 7:00 PM - 10:00 PM',
+        image: require('@src/assets/img-pizza/events/event-1/event-1.png'),
+    },
+    {
+        id: 2,
+        title: 'Live Cooking Show',
+        description:
+            'Join us for an exciting Live Cooking Show where culinary art comes to life. This one-of-a-kind event will feature our head chef preparing a gourmet three-course meal live in front of the audience. Learn the secrets of crafting exquisite dishes as the chef explains techniques, shares recipes, and offers professional tips throughout the evening. Guests will be served each course shortly after its preparation, ensuring a fresh and flavorful dining experience. The event will take place in our open-kitchen dining area, allowing you to observe the precision and creativity behind every dish. Perfect for food lovers and aspiring cooks, this interactive evening combines entertainment, education, and exceptional cuisine. Seats are limited for an exclusive experience.',
+        date: 'Wednesday, April 3, 2024',
+        time: 'Time: 6:30 PM - 9:00 PM',
+        image: require('@src/assets/img-pizza/events/event-2/event-2.png'),
+    },
+    {
+        id: 3,
+        title: 'Mediterranean Feast Night',
+        description:
+            'Join us for an exciting Live Cooking Show where culinary art comes to life. This one-of-a-kind event will feature our head chef preparing a gourmet three-course meal live in front of the audience. Learn the secrets of crafting exquisite dishes as the chef explains techniques, shares recipes, and offers professional tips throughout the evening. Guests will be served each course shortly after its preparation, ensuring a fresh and flavorful dining experience. The event will take place in our open-kitchen dining area, allowing you to observe the precision and creativity behind every dish. Perfect for food lovers and aspiring cooks, this interactive evening combines entertainment, education, and exceptional cuisine. Seats are limited for an exclusive experience.',
+        date: 'Friday, May 10, 2024',
+        time: 'Time: 7:00 PM - 10:00 PM',
+        image: require('@src/assets/img-pizza/events/event-3/event-3.png'),
+    },
+    {
+        id: 4,
+        title: 'Kids’ Pizza Workshop',
+        description:
+            'Join us for an exciting Live Cooking Show where culinary art comes to life. This one-of-a-kind event will feature our head chef preparing a gourmet three-course meal live in front of the audience. Learn the secrets of crafting exquisite dishes as the chef explains techniques, shares recipes, and offers professional tips throughout the evening. Guests will be served each course shortly after its preparation, ensuring a fresh and flavorful dining experience. The event will take place in our open-kitchen dining area, allowing you to observe the precision and creativity behind every dish. Perfect for food lovers and aspiring cooks, this interactive evening combines entertainment, education, and exceptional cuisine. Seats are limited for an exclusive experience.',
+        date: 'Sunday, June 2, 2024',
+        time: 'Time: 4:00 PM - 6:00 PM',
+        image: require('@src/assets/img-pizza/events/event-4/event-4.png'),
+    },
 ];

@@ -1,21 +1,22 @@
-import React, { type FC } from 'react';
+import React from 'react';
 import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-    Image,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  StatusBar,
 } from 'react-native';
 import { menuData } from '@src/utils/common';
 import Colors from '@src/styles/Colors';
 import Navigation from '@src/navigation/navigation';
-import {Screens} from '@src/navigation/const';
-import {shopSelector} from '@src/store/shop/shopSlice';
-import {useSelector} from 'react-redux';
+import { Screens } from '@src/navigation/const';
+import { shopSelector } from '@src/store/shop/shopSlice';
+import { useSelector } from 'react-redux';
 
 const MainScreen = (): React.JSX.Element => {
-    const { totalCount } = useSelector(shopSelector);
+    const { itemBasket } = useSelector(shopSelector);
     const handleNavigate = (screen: string) => {
         Navigation.navigate(screen);
     };
@@ -25,25 +26,75 @@ const MainScreen = (): React.JSX.Element => {
     };
 
     const renderItem = ({ item }: { item: (typeof menuData)[0] }) => (
-        <TouchableOpacity onPress={() => handleNavigate(item.route)} activeOpacity={0.7} style={styles.itemContainer}>
+        <TouchableOpacity
+            onPress={() => handleNavigate(item.route)}
+            activeOpacity={0.7}
+            style={styles.itemContainer}
+        >
             <Text style={styles.title}>{item.title}</Text>
-            <Image source={item.icon} style={styles.icon} />
         </TouchableOpacity>
     );
     return (
         <View style={styles.container}>
+          <StatusBar barStyle="light-content" backgroundColor={'transparent'} />
+            <Text
+                style={{
+                    color: Colors.white,
+                    fontSize: 32,
+                    fontWeight: '500',
+                    textAlign: 'center',
+                    zIndex: 999,
+                    paddingTop: 100,
+                    paddingBottom: 150,
+                }}
+            >
+                Olimpic
+            </Text>
+            <Image
+                source={require('@src/assets/img-pizza/background.png')}
+                resizeMode={'cover'}
+                style={{
+                    position: 'absolute',
+                    // bottom: 0,
+                  height: '150%',
+                    // top: -100,
+                    // left: -700,
+                }}
+            />
             <FlatList
                 data={menuData}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
             />
-            <TouchableOpacity activeOpacity={0.7} onPress={handleNavigateCart} style={styles.cartButton}>
+            <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={handleNavigateCart}
+                style={styles.cartButton}
+            >
                 <Image
                     resizeMode="cover"
-                    source={require('@src/assets/img/cart-icon/solar_cart-bold.png')}
+                    source={require('@src/assets/img-pizza/cart/cart-3-svgrepo-com1.png')}
                     style={styles.cartIcon}
                 />
-                <Text style={styles.cartText}>{totalCount} $</Text>
+                {itemBasket.length > 0 && (
+                    <View
+                        style={{
+                            width: 24,
+                            height: 24,
+                            borderRadius: 24 / 2,
+                            backgroundColor: Colors.button.buttonRed,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position: 'absolute',
+                            bottom: 0,
+                            right: 0,
+                        }}
+                    >
+                        <Text style={{ color: Colors.textOrange }}>
+                            {itemBasket.length}
+                        </Text>
+                    </View>
+                )}
             </TouchableOpacity>
         </View>
     );
@@ -53,24 +104,22 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.white,
         alignItems: 'center',
+        width: '100%',
         justifyContent: 'center',
         padding: 16,
     },
     itemContainer: {
         width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 22,
+        paddingVertical: 16,
+        paddingHorizontal: 74,
         marginVertical: 8,
-        borderWidth: 1,
-        borderColor: Colors.input.borderColor,
-        backgroundColor: Colors.white,
-        borderRadius: 16,
+        backgroundColor: Colors.button.buttonOrange,
+        borderRadius: 30,
     },
     title: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 20,
+        fontWeight: '300',
     },
     icon: {
         width: 44,
@@ -78,19 +127,20 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     cartButton: {
-        flexDirection: 'row',
+        position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
+        bottom: 40,
+        right: 20,
         padding: 16,
-        width: 180,
-        marginBottom: 20,
-        borderRadius: 16,
-        backgroundColor: Colors.button.buttonGreen,
+        width: 80,
+        height: 80,
+        borderRadius: 80 / 2,
+        backgroundColor: Colors.button.buttonOrange,
     },
     cartIcon: {
-        width: 24,
-        height: 24,
-        marginRight: 8,
+        width: 40,
+        height: 40,
     },
     cartText: {
         color: 'white',

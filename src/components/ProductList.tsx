@@ -29,29 +29,22 @@ const ProductList = ({ data }: { data: Product[] }) => {
             contentContainerStyle={styles.contentContainerStyle}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-                <View style={styles.product}>
+            renderItem={({ item, index }) => (
+                <View style={[styles.product,
+                    data.length === 1 && { width: '96%' },
+                    index % 2 !== 0 && { marginRight: 0 },
+                ]}>
                     <Image
                         resizeMode="cover"
                         source={item.image}
                         style={styles.image}
                     />
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginBottom: 4,
-                        }}
-                    >
-                        <Text style={styles.price}>${item.price}</Text>
-                        {item.oldPrice && (
-                            <Text style={styles.oldPrice}>
-                                ${item.oldPrice}
-                            </Text>
-                        )}
-                    </View>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.description}>{item.description}</Text>
+
+                    <Text numberOfLines={1} style={styles.title}>
+                        {item.title}
+                    </Text>
+
+                    <Text style={styles.price}>$ {item.price}</Text>
                     <View style={styles.actionsContainer}>
                         {itemBasket.some(
                             (basketItem) => basketItem.product.id === item.id
@@ -91,12 +84,12 @@ const ProductList = ({ data }: { data: Product[] }) => {
 
 const styles = StyleSheet.create({
     product: {
-        width: '49%',
+        width: '45%',
         backgroundColor: Colors.white,
-        marginRight: 4,
+        marginRight: 24,
         borderWidth: 1,
-        padding: 12,
-        borderColor: Colors.grayCartBorder,
+        padding: 4,
+        borderColor: Colors.button.buttonOrange,
         marginBottom: 13,
         borderRadius: 10,
     },
@@ -107,38 +100,31 @@ const styles = StyleSheet.create({
     },
     image: {
         alignSelf: 'center',
+        width: '100%',
+        height: 85,
         borderRadius: 12,
         marginBottom: 12,
     },
     title: {
         fontWeight: '400',
-        fontSize: 14,
-        color: Colors.textBlack,
-        marginBottom: 4,
-    },
-    description: {
         fontSize: 12,
-        color: Colors.textGray,
+        textAlign: 'center',
+        color: Colors.textBlack,
     },
     price: {
-        fontSize: 20,
-        fontWeight: '700',
-        marginRight: 8,
+        paddingTop: 20,
+        paddingBottom: 20,
+        textAlign: 'center',
+        fontSize: 12,
+        fontWeight: '300',
         color: Colors.textBlack,
     },
-    oldPrice: {
-        fontSize: 12,
-        fontWeight: '500',
-        textDecorationLine: 'line-through',
-        color: Colors.textGray,
-    },
-    // Другие стили остаются прежними
     actionsContainer: {
         marginTop: 8,
         width: '100%',
     },
     addButton: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.button.buttonOrange,
         borderRadius: 8,
         padding: 10,
         shadowColor: 'black',

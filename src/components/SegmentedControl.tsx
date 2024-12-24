@@ -1,6 +1,11 @@
 import React from 'react';
-import { type FC } from 'react';
-import {StyleSheet, Text, TouchableOpacity, useWindowDimensions, View} from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    useWindowDimensions,
+    View,
+} from 'react-native';
 import Animated, {
     useAnimatedStyle,
     withTiming,
@@ -26,7 +31,8 @@ const SegmentedControl: React.FC<SegmentedControlProps> = React.memo(
         const rStyle = useAnimatedStyle(() => {
             return {
                 left: withTiming(
-                    itemWidth * options.indexOf(selectedOption) + internalPadding / 2
+                    itemWidth * options.indexOf(selectedOption) +
+                        (internalPadding / 2)
                 ),
             };
         }, [selectedOption, options, itemWidth]);
@@ -78,25 +84,25 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 36,
         width: '100%',
-        backgroundColor: Colors.gray,
+      borderWidth: 0.5,
+      borderColor: Colors.button.buttonOrange,
+      borderRadius: 12,
+        backgroundColor: Colors.white,
     },
     activeBox: {
         position: 'absolute',
         borderRadius: 12,
-        shadowColor: 'black',
-        shadowOffset: {
-            width: 0,
-            height: 0,
-        },
-        shadowOpacity: 0.1,
-        elevation: 3,
         height: '95%',
         top: '3%',
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.button.buttonOrange,
     },
-    labelContainer: { justifyContent: 'center', alignItems: 'center' },
+    labelContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     label: {
         fontSize: 12,
+      fontWeight: '400',
     },
 });
 export default SegmentedControl;
