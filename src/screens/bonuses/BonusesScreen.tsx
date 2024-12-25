@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     Dimensions,
+    FlatList,
     Image,
     StyleSheet,
     Text,
@@ -13,9 +14,16 @@ import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Navigation from '@src/navigation/navigation';
 
+interface Item {
+    id: string;
+    date: string;
+    time: string;
+}
+
 const BonusesScreen = (): React.JSX.Element => {
     const initialCards = Array(6).fill('');
     const [cards, setCards] = useState<string[]>(initialCards);
+    const [items, setItems] = useState<Item[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isError, setIsError] = useState(false);
     const [selectedCard, setSelectedCard] = useState<number | null>(null);
@@ -29,9 +37,43 @@ const BonusesScreen = (): React.JSX.Element => {
             if (savedCards.length > 0) {
                 setCards(JSON.parse(savedCards));
             }
+            const storedItems = await AsyncStorage.getItem('items');
+            if (storedItems) {
+                setItems(JSON.parse(storedItems));
+            }
         };
         loadCards();
     }, []);
+
+    const addItem = async () => {
+        const now = new Date();
+
+        // Форматирование даты
+        const formattedDate = `${now.getDate()} ${now.toLocaleString('en-US', {
+            month: 'long',
+        })}`; // Пример: "22 June"
+
+        // Форматирование времени
+        const formattedTime = `${now.getHours()}:${String(
+            now.getMinutes()
+        ).padStart(2, '0')}`; // Пример: "13:20"
+
+        const newItem: Item = {
+            id: Math.random().toString(), // Уникальный ID
+            date: formattedDate,
+            time: formattedTime,
+        };
+
+        const updatedItems = [...items, newItem];
+
+        try {
+            // Сохраняем обновленный массив в AsyncStorage
+            await AsyncStorage.setItem('items', JSON.stringify(updatedItems));
+            setItems(updatedItems); // Обновляем состояние
+        } catch (error) {
+            console.error('Ошибка при сохранении данных:', error);
+        }
+    };
 
     // Сохранение состояния в AsyncStorage
     const saveCards = async (newCards: string[]) => {
@@ -42,7 +84,9 @@ const BonusesScreen = (): React.JSX.Element => {
     // Очистка AsyncStorage и сброс состояния
     const resetCards = async () => {
         await AsyncStorage.removeItem('cards');
-        setCards(initialCards); // Сброс к первоначальному состоянию
+        await AsyncStorage.removeItem('items');
+        setCards(initialCards);
+        setItems([]);
     };
 
     // Открытие модалки
@@ -56,6 +100,7 @@ const BonusesScreen = (): React.JSX.Element => {
         if (selectedCard !== null) {
             const newCards = [...cards];
             if (inputValue === '1111') {
+                addItem();
                 newCards[selectedCard] = inputValue;
                 saveCards(newCards);
                 setInputValue('');
@@ -158,60 +203,39 @@ const BonusesScreen = (): React.JSX.Element => {
             >
                 History Rewards
             </Text>
-            <View
-                style={{
-                    marginTop: 12,
-                    borderBottomWidth: 1,
-                    borderBottomColor: Colors.textBlack,
-                }}
-            >
-                <Text
-                    style={{
-                        fontSize: 16,
-                        fontWeight: '500',
-                        color: Colors.textBlack,
-                    }}
-                >
-                    +1 point
-                </Text>
-                <Text
-                    style={{
-                        fontSize: 12,
-                        paddingVertical: 6,
-                        fontWeight: '400',
-                        color: Colors.textGray,
-                    }}
-                >
-                    24 June | 12:30
-                </Text>
-            </View>
-            <View
-                style={{
-                    marginTop: 12,
-                    borderBottomWidth: 1,
-                    borderBottomColor: Colors.textBlack,
-                }}
-            >
-                <Text
-                    style={{
-                        fontSize: 16,
-                        fontWeight: '500',
-                        color: Colors.textBlack,
-                    }}
-                >
-                    +1 point
-                </Text>
-                <Text
-                    style={{
-                        fontSize: 12,
-                        paddingVertical: 6,
-                        fontWeight: '400',
-                        color: Colors.textGray,
-                    }}
-                >
-                    22 June | 12:30
-                </Text>
-            </View>
+            <FlatList
+                data={items}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <View
+                        style={{
+                            marginTop: 12,
+                            borderBottomWidth: 1,
+                            borderBottomColor: Colors.textBlack,
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                fontWeight: '500',
+                                color: Colors.textBlack,
+                            }}
+                        >
+                            +1 point
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 12,
+                                paddingVertical: 6,
+                                fontWeight: '400',
+                                color: Colors.textGray,
+                            }}
+                        >
+                            {`${item.date} | ${item.time}`}
+                        </Text>
+                    </View>
+                )}
+            />
             <Modal isVisible={modalVisible}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
